@@ -1,14 +1,14 @@
 pipeline {
     agent any
     tools {
-        jdk 'java1.8'
+        jdk 'java11'
     }
     stages {
         stage('compile') {
 	         steps {
                 // step1 
                 echo 'compiling..'
-		            git url: 'https://github.com/lerndevops/PetClinic'
+		            git url: 'https://github.com/lernwithshubh/PetClinic'
 		            sh script: '/opt/maven/bin/mvn compile'
            }
         }
@@ -36,22 +36,6 @@ pipeline {
                }
             }			
         }
-        stage('codecoverage') {
-
-           tools {
-              jdk 'java1.8'
-           }
-	         steps {
-                // step4
-                echo 'codecoverage..'
-		            sh script: '/opt/maven/bin/mvn cobertura:cobertura -Dcobertura.report.format=xml'
-           }
-	         post {
-               success {
-	               cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false                  
-               }
-           }		
-        }
         stage('package/build-war') {
 	         steps {
                 // step5
@@ -63,8 +47,8 @@ pipeline {
 	         steps {
               withDockerRegistry(credentialsId: 'DOCKER_HUB_LOGIN', url: 'https://index.docker.io/v1/') {
                     sh script: 'cd  $WORKSPACE'
-                    sh script: 'docker build --file Dockerfile --tag docker.io/lerndevops/petclinic:$BUILD_NUMBER .'
-                    sh script: 'docker push docker.io/lerndevops/petclinic:$BUILD_NUMBER'
+                    sh script: 'docker build --file Dockerfile --tag docker.io/08170007/petclinic:$BUILD_NUMBER .'
+                    sh script: 'docker push docker.io/08170007/petclinic:$BUILD_NUMBER'
               }	
            }		
         }
