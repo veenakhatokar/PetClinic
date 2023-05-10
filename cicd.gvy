@@ -8,7 +8,7 @@ pipeline {
 	         steps {
                 // step1 
                 echo 'compiling..'
-		            git url: 'https://github.com/bhavukm/cicd-pipeline-train-schedule-autodeploy'
+		            git url: 'https://github.com/veenakhatokar/cicd-pipeline-train-schedule-autodeploy'
 		            sh script: '/opt/maven/bin/mvn compile'
            }
         }
